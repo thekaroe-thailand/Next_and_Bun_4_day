@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+.signin {
+  @apply border border-gray-300 mx-auto
+    flex flex-col space-y-3 bg-white p-4
+    rounded-lg shadow-lg
+}
+.signin input {
+  @apply border border-gray-300 rounded-md
+    p-2
+}
+.signin h1 {
+  @apply text-xl font-semibold
+}
+.signin button {
+  @apply bg-purple-600 rounded-md text-white  
+    px-4 py-2 shadow-lg
+}
+body {
+  @apply bg-gray-100
+}
+.signin-block {
+  @apply flex items-center justify-center h-screen
+}
+
+/** sidebar **/
+.sidebar {
+  @apply bg-indigo-400 h-screen w-64
+}
+
+.sidebar .header {
+  @apply flex flex-col space-y-5 bg-gray-800
+    text-white pb-5
+}
+
+.sidebar .header h1 {
+  @apply text-3xl text-center mt-5 font-bold
+}
+
+.sidebar .header p {
+  @apply text-center text-xl
+}
+
+.sidebar .body {
+  @apply flex flex-col space-y-4 h-screen
+  text-white pt-3
+  bg-gray-700
+}
+
+.sidebar .body a {
+  @apply ps-3
+}
+
+.sidebar .body a i {
+  @apply mr-2 w-[22px]
+}
+
+.sidebar .header .button {
+  @apply flex gap-3 text-sm justify-center
+}
+
+.sidebar .header .button a {
+  @apply text-blue-300 border border-blue-300 px-4  
+    py-2 rounded-lg hover:bg-blue-300 hover:text-gray-800
+}
+
+.sidebar .header .button button {
+  @apply text-red-300 border-red-300 border px-4 py-2
+    rounded-lg hover:bg-red-300 hover:text-gray-800
+    cursor-pointer
+}
