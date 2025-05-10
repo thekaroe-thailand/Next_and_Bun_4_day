@@ -63,7 +63,7 @@ export default function Sidebar() {
                         {name}: {level}
                     </p>
                     <p className="button">
-                        <Link href="/backoffice/edit-profile">
+                        <Link href="/backoffice/home/edit-profile">
                             <i className="fa fa-user-edit mr-2"></i>
                             แก้ไข
                         </Link>

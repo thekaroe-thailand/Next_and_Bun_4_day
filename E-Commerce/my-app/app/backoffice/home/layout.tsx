@@ -11,7 +11,7 @@ export default function RootLayout({
             <div>
                 <Sidebar />
             </div>
-            <div>
+            <div className="w-full mr-12">
                 {children}
             </div>
         </div>
