@@ -178,6 +178,18 @@ body {
       hover:to-emerald-900 shadow-lg shadow-emerald-500/20 transition-all duration-200 ease-in-out;
 }
 
+.container button.modal-btn-order-cancel {
+  @apply border border-red-400 bg-gray-800 text-red-300 cursor-pointer hover:bg-red-400 hover:text-white
+}
+
+.container button.modal-btn-get-money {
+  @apply border border-green-400 bg-gray-800 text-green-400 cursor-pointer hover:bg-green-400 hover:text-gray-900
+}
+
+.container button.modal-btn-send {
+  @apply border border-blue-400 bg-gray-800 text-blue-400 cursor-pointer hover:bg-blue-400 hover:text-gray-900
+}
+
 .front label {
   @apply block w-full
 }
@@ -207,7 +219,7 @@ body {
 }
 
 .table tbody td {
-  @apply bg-gray-300 border border-l-0 border-r-0 border-b-gray-100 p-1
+  @apply bg-gray-300 p-2 border border-l-0 border-r-0 border-b-gray-100
 }
 
 .table tbody td img {

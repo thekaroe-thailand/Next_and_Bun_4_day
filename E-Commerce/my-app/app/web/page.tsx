@@ -124,10 +124,11 @@ export default function Home() {
                 </Link>
             </div>
             <h1 className="text-2xl font-semibold">หนังสือในร้านเรา</h1>
-            <div className="grid grid-cols-3 md:grid-cols-3 xl:grid-cols-8 lg:grid-cols-5 gap-2">
+            <div className="grid grid-cols-3 md:grid-cols-3 xl:grid-cols-6 lg:grid-cols-5 gap-2">
                 {books.map((book: BookInterface) => (
                     <div key={book.id} className="bg-white border border-gray-400 rounded-md">
-                        <div><img src={Config.apiUrl + '/public/uploads/' + book.image} className="rounded-md" /></div>
+                        <div><img src={Config.apiUrl + '/public/uploads/' + book.image}
+                            className="rounded-md h-full" /></div>
                         <div className="p-4 text-xl text-indigo-600">{book.name}</div>
                         <div className="flex bg-gray-300 p-2 justify-between">
                             <div className="font-bold text-xl">

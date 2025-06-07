@@ -100,6 +100,10 @@ export default function WebLayout({
                     </>
                     :
                     <>
+                        <Link href='/web/member/history'>
+                            <i className="fa fa-file-alt mr-2"></i>
+                            ติดตามสินค้า
+                        </Link>
                         <button onClick={handleSignOut}>
                             <i className="fa fa-times mr-2"></i>
                             ออกจากระบบ
