@@ -9,7 +9,7 @@ import Modal from "../components/Modal";
 export default function Admin() {
     const [admins, setAdmins] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [levels, setLevels] = useState([
+    const [levels] = useState([
         { label: 'ผู้ดูแลระบบ', value: 'admin' },
         { label: 'ผู้ใช้งานทั่วไป', value: 'user' }
     ])
