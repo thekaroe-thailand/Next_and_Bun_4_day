@@ -94,6 +94,7 @@ export default function Home() {
         }
     }
 
+    /*
     const handleAddToCart = async (bookId: string) => {
         try {
             const url = Config.apiUrl + '/api/cart/add'
@@ -114,6 +115,7 @@ export default function Home() {
             })
         }
     }
+        */
 
     return (
         <div className="p-3">
