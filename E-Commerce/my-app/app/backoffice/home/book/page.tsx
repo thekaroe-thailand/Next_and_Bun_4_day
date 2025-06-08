@@ -8,7 +8,6 @@ import Swal from "sweetalert2"
 import Modal from "../components/Modal"
 import { ErrorInterface } from "@/app/interface/ErrorInterface"
 import Image from "next/image"
-import { FileInterface } from "@/app/interface/FileInterface"
 
 export default function Book() {
     const [books, setBooks] = useState<BookInterface[]>([])

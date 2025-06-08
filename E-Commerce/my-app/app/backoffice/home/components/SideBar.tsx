@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { Config } from "@/app/config";
 import { useRouter } from "next/navigation";
+import { ErrorInterface } from "@/app/interface/ErrorInterface";
 
 export default function Sidebar() {
     const [name, setName] = useState('');
@@ -34,10 +35,10 @@ export default function Sidebar() {
                     setLevel(res.data.level);
                 }
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
