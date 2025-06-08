@@ -18,6 +18,7 @@ export default function Home() {
 
     useEffect(() => {
         //fetchData();
+        readToken();
     }, []);
 
     useEffect(() => {
