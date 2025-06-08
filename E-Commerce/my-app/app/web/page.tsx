@@ -9,6 +9,7 @@ import { BookInterface } from "../interface/BookInterface";
 import { CartInterface } from "../interface/CartInterface";
 import Link from "next/link";
 import { ErrorInterface } from "../interface/ErrorInterface";
+import Image from "next/image";
 
 export default function Home() {
     const [books] = useState<BookInterface[]>([]);
@@ -129,8 +130,8 @@ export default function Home() {
             <h1 className="text-2xl font-semibold">หนังสือในร้านเรา</h1>
             <div className="grid grid-cols-3 md:grid-cols-3 xl:grid-cols-6 lg:grid-cols-5 gap-2">
                 {books !== undefined && books.length > 0 &&
-                    books?.map(() => (
-                        <div>xxx</div>
+                    books?.map((item) => (
+                        <div key={item.id}>xxx</div>
                     ))
                 }
             </div>
