@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { Config } from "@/app/config";
 import { useRouter } from "next/navigation";
+import { ErrorInterface } from "@/app/interface/ErrorInterface";
 
 export default function Page() {
     const [username, setUsername] = useState('');
@@ -31,10 +32,10 @@ export default function Page() {
                     router.push('/backoffice/home/order');
                 }
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }

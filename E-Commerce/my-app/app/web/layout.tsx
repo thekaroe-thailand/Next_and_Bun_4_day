@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Config } from "../config";
 import axios from "axios";
+import { ErrorInterface } from "../interface/ErrorInterface";
 
 export default function WebLayout({
     children
@@ -31,10 +32,10 @@ export default function WebLayout({
                     setUsername(response.data.username);
                 }
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
