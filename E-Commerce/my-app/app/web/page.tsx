@@ -130,7 +130,7 @@ export default function Home() {
             </div>
             <h1 className="text-2xl font-semibold">หนังสือในร้านเรา</h1>
             <div className="grid grid-cols-3 md:grid-cols-3 xl:grid-cols-6 lg:grid-cols-5 gap-2">
-                show book
+                show book {books.length}
             </div>
         </div>
     );
