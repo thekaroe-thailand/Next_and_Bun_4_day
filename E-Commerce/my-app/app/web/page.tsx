@@ -96,20 +96,16 @@ export default function Home() {
 
     const handleAddToCart = async (bookId: string) => {
         try {
-            console.log(bookId);
-            /*
             const url = Config.apiUrl + '/api/cart/add'
             const payload = {
-                memberId: memberId ?? '',
-                bookId: bookId ?? ''
+                memberId: memberId,
+                bookId: bookId
             }
-            //await axios.post(url, payload);
-            //fetchDataCart();
-            //console.log(response);
-            /*
-            if (response.status === 200) {
-                //fetchDataCart();
-            }*/
+            const response = await axios.post(url, payload);
+
+            if (response.status == 200) {
+                fetchDataCart();
+            }
         } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
@@ -134,33 +130,7 @@ export default function Home() {
                 {books !== undefined && books.length > 0 &&
                     books?.map((book) => (
                         <div key={book.id} className="bg-white border border-gray-400 rounded-md">
-                            <div>
-                                {book.image &&
-                                    <Image
-                                        width={200}
-                                        height={150}
-                                        style={{ width: '100%', height: '100%' }}
-                                        alt=""
-                                        src={Config.apiUrl + '/public/uploads/' + book?.image}
-                                        className="rounded-md h-full"
-                                    />
-                                }
-                            </div>
-                            <div className="p-4 text-xl text-indigo-600">{book.name}</div>
-                            <div className="flex bg-gray-300 p-2 justify-between">
-                                <div className="font-bold text-xl">
-                                    {book.price.toLocaleString()} บาท
-                                </div>
 
-                                {token &&
-                                    <button
-                                        onClick={() => handleAddToCart(book?.id)}
-                                        className="bg-gray-600 cursor-pointer px-4 py-2 rounded-2xl text-white">
-                                        <i className="fa fa-shopping-cart mr-3"></i>
-                                        หยิบลงตะกร้า
-                                    </button>
-                                }
-                            </div>
                         </div>
                     ))
                 }
