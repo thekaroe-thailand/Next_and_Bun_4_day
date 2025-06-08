@@ -19,9 +19,11 @@ export default function Home() {
     const [qtyInCart, setQtyInCart] = useState(0);
 
     useEffect(() => {
-        readToken();
         fetchData();
+        readToken();
+    }, []);
 
+    useEffect(() => {
         if (memberId !== '') {
             fetchDataCart();
         }
@@ -55,8 +57,8 @@ export default function Home() {
             const url = Config.apiUrl + '/api/book'
             const response = await axios.get(url);
 
-            if (response.status == 200) {
-                setBooks(response.data);
+            if (response.status === 200) {
+                //setBooks(response.data ?? []);
             }
         } catch (err: unknown) {
             Swal.fire({
@@ -94,7 +96,6 @@ export default function Home() {
         }
     }
 
-    /*
     const handleAddToCart = async (bookId: string) => {
         try {
             const url = Config.apiUrl + '/api/cart/add'
@@ -115,7 +116,6 @@ export default function Home() {
             })
         }
     }
-        */
 
     return (
         <div className="p-3">
@@ -132,7 +132,33 @@ export default function Home() {
                 {books !== undefined && books.length > 0 &&
                     books?.map((book) => (
                         <div key={book.id} className="bg-white border border-gray-400 rounded-md">
+                            <div>
+                                {book.image &&
+                                    <Image
+                                        width={200}
+                                        height={150}
+                                        style={{ width: '100%', height: '100%' }}
+                                        alt=""
+                                        src={Config.apiUrl + '/public/uploads/' + book?.image}
+                                        className="rounded-md h-full"
+                                    />
+                                }
+                            </div>
+                            <div className="p-4 text-xl text-indigo-600">{book.name}</div>
+                            <div className="flex bg-gray-300 p-2 justify-between">
+                                <div className="font-bold text-xl">
+                                    {book.price.toLocaleString()} บาท
+                                </div>
 
+                                {token &&
+                                    <button
+                                        onClick={() => handleAddToCart(book?.id)}
+                                        className="bg-gray-600 cursor-pointer px-4 py-2 rounded-2xl text-white">
+                                        <i className="fa fa-shopping-cart mr-3"></i>
+                                        หยิบลงตะกร้า
+                                    </button>
+                                }
+                            </div>
                         </div>
                     ))
                 }
