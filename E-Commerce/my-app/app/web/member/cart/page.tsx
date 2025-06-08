@@ -192,7 +192,7 @@ export default function Cart() {
                         </tr>
                     </thead>
                     <tbody>
-                        {carts.map((cart: CartInterface) => (
+                        {carts && carts.map((cart: CartInterface) => (
                             <tr key={cart.id}>
                                 <td><Image alt="" src={Config.apiUrl + '/public/uploads/' + cart.book.image} /></td>
                                 <td>{cart.book.name}</td>
