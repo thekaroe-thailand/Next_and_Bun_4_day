@@ -6,6 +6,9 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 import Modal from "../components/Modal"
+import { ErrorInterface } from "@/app/interface/ErrorInterface"
+import Image from "next/image"
+import { FileInterface } from "@/app/interface/FileInterface"
 
 export default function Book() {
     const [books, setBooks] = useState<BookInterface[]>([])
@@ -30,10 +33,10 @@ export default function Book() {
             if (response.status == 200) {
                 setBooks(response.data);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
@@ -53,7 +56,7 @@ export default function Book() {
 
     const handleSave = async () => {
         try {
-            let response: any;
+            let response: { status: number };
             const data = new FormData();
             data.append("image", image as Blob);
             data.append("isbn", isbn);
@@ -81,10 +84,10 @@ export default function Book() {
                 fetchData();
                 closeModal();
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
@@ -127,9 +130,11 @@ export default function Book() {
         }
     }
 
-    const chooseFile = (files: any) => {
-        if (files.length > 0) {
-            const file: File = files[0];
+    const chooseFile = (files: unknown) => {
+        const chooseFiles: FileList = files as FileList;
+
+        if (chooseFiles.length > 0) {
+            const file = chooseFiles[0];
             setImage(file);
         }
     }
@@ -162,8 +167,8 @@ export default function Book() {
                             <tr key={book.id}>
                                 <td className="text-center">
                                     {book.image != null ?
-                                        <img src={Config.apiUrl + '/public/uploads/' + book.image}
-                                            className="w-[150px] rounded-xl shadow-md" />
+                                        <Image alt='' src={Config.apiUrl + '/public/uploads/' + book.image}
+                                            className="w-[150px] rounded-xl shadow-md" width={150} height={150} />
                                         : <i className="fa fa-image text-6xl text-gray-500"></i>
                                     }
                                 </td>
@@ -174,11 +179,11 @@ export default function Book() {
                                 <td>
                                     <div className="flex gap-1 items-center">
                                         <button className="btn-edit"
-                                            onClick={(e) => handleEdit(book)}
+                                            onClick={() => handleEdit(book)}
                                         >
                                             <i className="fa fa-edit"></i>
                                         </button>
-                                        <button className="btn-delete" onClick={(e) => handleDelete(book)}>
+                                        <button className="btn-delete" onClick={() => handleDelete(book)}>
                                             <i className="fa fa-times"></i>
                                         </button>
                                     </div>
@@ -214,8 +219,8 @@ export default function Book() {
 
                     <div>
                         <label>รูปภาพ</label>
-                        {imageUrl != null ?
-                            <img src={Config.apiUrl + '/public/uploads/' + imageUrl}
+                        {imageUrl != '' ?
+                            <Image width={150} height={150} alt="" src={Config.apiUrl + '/public/uploads/' + imageUrl}
                                 className="rounded-lg mt-3 mb-3"
                             />
                             : null}
