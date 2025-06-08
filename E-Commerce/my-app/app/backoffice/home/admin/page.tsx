@@ -59,7 +59,9 @@ export default function Admin() {
                 password: password,
                 level: level
             }
-            let response: any;
+            let response: {
+                status: number
+            };
 
             if (id != '') {
                 // update
