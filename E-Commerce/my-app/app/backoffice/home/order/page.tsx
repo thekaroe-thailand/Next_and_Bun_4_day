@@ -6,6 +6,8 @@ import axios from "axios";
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
+import { ErrorInterface } from "@/app/interface/ErrorInterface";
+import Image from "next/image";
 
 export default function Order() {
     const [orders, setOrders] = useState<OrderInterface[]>([]);
@@ -62,11 +64,11 @@ export default function Order() {
 
                 setOrders(rows);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: err.message
+                text: (err as ErrorInterface).message
             })
         }
     }
@@ -103,11 +105,11 @@ export default function Order() {
                     fetchData();
                 }
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: err.message
+                text: (err as ErrorInterface).message
             })
         }
     }
@@ -142,11 +144,11 @@ export default function Order() {
                     fetchData();
                 }
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: err.message
+                text: (err as ErrorInterface).message
             })
         }
     }
@@ -177,11 +179,11 @@ export default function Order() {
                 closeModal();
                 fetchData();
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: err.message
+                text: (err as ErrorInterface).message
             })
         }
     }
@@ -214,7 +216,7 @@ export default function Order() {
                                 {order.statusText}
                             </td>
                             <td>
-                                <button onClick={(e) => openModal(order)}>
+                                <button onClick={() => openModal(order)}>
                                     <i className="fa fa-file mr-2"></i>
                                     ดูข้อมูล
                                 </button>
@@ -236,7 +238,7 @@ export default function Order() {
                     </div>
                     <div className="mb-3">
                         <label>เอกสารการโอนเงิน</label>
-                        <img src={Config.apiUrl + '/public/upload/slip/' + order?.slipImage}
+                        <Image alt="" src={Config.apiUrl + '/public/upload/slip/' + order?.slipImage}
                             className="w-[350px] rounded-xl"
                         />
                     </div>
