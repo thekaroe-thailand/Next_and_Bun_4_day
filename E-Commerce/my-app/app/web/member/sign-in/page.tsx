@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Config } from "@/app/config"
 import axios from "axios"
 import Swal from "sweetalert2"
+import { ErrorInterface } from "@/app/interface/ErrorInterface"
 
 export default function SignIn() {
     const [username, setUsername] = useState('');
@@ -24,10 +25,10 @@ export default function SignIn() {
                 localStorage.setItem(Config.tokenMember, response.data.token)
                 window.location.href = '/web'
             }
-        } catch (_) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'username ไม่ถูกต้อง',
-                text: 'ไม่มีผู้ใช้นี้ในระบบ',
+                text: 'ไม่มีผู้ใช้นี้ในระบบ ' + (err as ErrorInterface).message,
                 icon: 'info',
                 timer: 1000
             })
