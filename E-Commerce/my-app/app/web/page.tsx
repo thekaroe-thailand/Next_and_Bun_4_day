@@ -5,20 +5,19 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { Config } from "../config";
-import { BookInterface } from "../interface/BookInterface";
 import { CartInterface } from "../interface/CartInterface";
 import Link from "next/link";
 import { ErrorInterface } from "../interface/ErrorInterface";
 
 export default function Home() {
-    const [books, setBooks] = useState<BookInterface[]>([]);
+    //const [books, setBooks] = useState<BookInterface[]>([]);
     const [token, setToken] = useState('');
     const [carts, setCarts] = useState<CartInterface[]>([]);
     const [memberId, setMemberId] = useState('')
     const [qtyInCart, setQtyInCart] = useState(0);
 
     useEffect(() => {
-        fetchData();
+        //fetchData();
     }, []);
 
     useEffect(() => {
@@ -49,7 +48,7 @@ export default function Home() {
             })
         }
     }
-
+    /*
     const fetchData = async () => {
         try {
             const url = Config.apiUrl + '/api/book'
@@ -67,6 +66,7 @@ export default function Home() {
             })
         }
     }
+        */
 
     const fetchDataCart = async () => {
         try {
@@ -130,7 +130,7 @@ export default function Home() {
             </div>
             <h1 className="text-2xl font-semibold">หนังสือในร้านเรา</h1>
             <div className="grid grid-cols-3 md:grid-cols-3 xl:grid-cols-6 lg:grid-cols-5 gap-2">
-                show book {books.length}
+                show book
             </div>
         </div>
     );
