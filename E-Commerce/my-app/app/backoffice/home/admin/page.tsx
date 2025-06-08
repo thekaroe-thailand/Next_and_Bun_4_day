@@ -94,10 +94,11 @@ export default function Admin() {
                 fetchData();
                 closeModal();
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const error = err as ErrorInterface
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: error.message,
                 icon: 'error'
             })
         }
