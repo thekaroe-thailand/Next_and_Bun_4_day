@@ -9,7 +9,6 @@ import { BookInterface } from "../interface/BookInterface";
 import { CartInterface } from "../interface/CartInterface";
 import Link from "next/link";
 import { ErrorInterface } from "../interface/ErrorInterface";
-import Image from "next/image";
 
 export default function Home() {
     const [books] = useState<BookInterface[]>([]);
