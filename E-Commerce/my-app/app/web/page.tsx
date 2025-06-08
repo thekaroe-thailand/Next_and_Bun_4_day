@@ -96,6 +96,7 @@ export default function Home() {
 
     const handleAddToCart = async (bookId: string) => {
         try {
+            console.log(bookId);
             /*
             const url = Config.apiUrl + '/api/cart/add'
             const payload = {
