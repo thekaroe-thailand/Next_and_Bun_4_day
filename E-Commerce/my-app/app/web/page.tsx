@@ -11,7 +11,7 @@ import Link from "next/link";
 import { ErrorInterface } from "../interface/ErrorInterface";
 
 export default function Home() {
-    const [books] = useState<BookInterface[]>([]);
+    const [books, setBooks] = useState<BookInterface[]>([]);
     const [token, setToken] = useState('');
     const [carts, setCarts] = useState<CartInterface[]>([]);
     const [memberId, setMemberId] = useState('')
@@ -56,7 +56,7 @@ export default function Home() {
             const response = await axios.get(url);
 
             if (response.status === 200) {
-                //setBooks([]);
+                setBooks(response.data);
                 readToken();
             }
         } catch (err: unknown) {
@@ -130,11 +130,7 @@ export default function Home() {
             </div>
             <h1 className="text-2xl font-semibold">หนังสือในร้านเรา</h1>
             <div className="grid grid-cols-3 md:grid-cols-3 xl:grid-cols-6 lg:grid-cols-5 gap-2">
-                {books !== undefined && books.length > 0 &&
-                    books?.map((item) => (
-                        <div key={item.id}>xxx</div>
-                    ))
-                }
+                show book
             </div>
         </div>
     );
