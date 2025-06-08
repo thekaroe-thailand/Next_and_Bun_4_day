@@ -6,6 +6,8 @@ import { Config } from "@/app/config"
 import { CartInterface } from "@/app/interface/CartInterface"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { ErrorInterface } from "@/app/interface/ErrorInterface"
+import Image from "next/image"
 
 export default function Cart() {
     const [carts, setCarts] = useState<CartInterface[]>([]);
@@ -46,10 +48,10 @@ export default function Cart() {
             if (response.status === 200) {
                 setQrImage(response.data.qrImage);
             }
-        } catch (e: any) {
+        } catch (e: unknown) {
             Swal.fire({
                 title: 'error',
-                text: e.message,
+                text: (e as ErrorInterface).message,
                 icon: 'error'
             })
         }
@@ -77,10 +79,10 @@ export default function Cart() {
             if (response.status == 200) {
                 setMemberId(response.data.id)
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
@@ -94,10 +96,10 @@ export default function Cart() {
             if (response.status == 200) {
                 setCarts(response.data);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
@@ -122,10 +124,10 @@ export default function Cart() {
                     fetchData();
                 }
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
@@ -139,10 +141,10 @@ export default function Cart() {
             if (response.status === 200) {
                 fetchData();
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
@@ -156,8 +158,9 @@ export default function Cart() {
             if (response.status === 200) {
                 fetchData();
             }
-        } catch (err: any) {
-            if (err.status == 400) {
+        } catch (err: unknown) {
+            const error = err as ErrorInterface;
+            if (error.status == 400) {
                 Swal.fire({
                     text: 'สินค้าควรมีอย่างน้อย 1 รายกาาร',
                     title: 'ตรวจสอบรายการ',
@@ -166,7 +169,7 @@ export default function Cart() {
             } else {
                 Swal.fire({
                     title: 'error',
-                    text: err,
+                    text: error.message,
                     icon: 'error'
                 })
             }
@@ -191,25 +194,25 @@ export default function Cart() {
                     <tbody>
                         {carts.map((cart: CartInterface) => (
                             <tr key={cart.id}>
-                                <td><img src={Config.apiUrl + '/public/uploads/' + cart.book.image} /></td>
+                                <td><Image alt="" src={Config.apiUrl + '/public/uploads/' + cart.book.image} /></td>
                                 <td>{cart.book.name}</td>
                                 <td className="text-right">{cart.book.price.toLocaleString()}</td>
                                 <td className="text-right">
                                     <div className="flex gap-2 items-center justify-center">
                                         <button className="btn-minus"
-                                            onClick={(e) => downQty(cart.id)}>
+                                            onClick={() => downQty(cart.id)}>
                                             <i className="fa fa-minus"></i>
                                         </button>
                                         {cart.qty}
                                         <button className="btn-plus"
-                                            onClick={(e) => upQty(cart.id)}>
+                                            onClick={() => upQty(cart.id)}>
                                             <i className="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </td>
                                 <td className="text-right">{(cart.qty * cart.book.price).toLocaleString()}</td>
                                 <td>
-                                    <button onClick={(e) => handleDelete(cart.id)}
+                                    <button onClick={() => handleDelete(cart.id)}
                                         className="btn-delete">
                                         <i className="fa fa-times"></i>
                                     </button>
@@ -235,11 +238,11 @@ export default function Cart() {
             await handleSaveOrder();
 
             router.push('/web/member/cart/success');
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: err.message
+                text: (err as ErrorInterface).message
             });
         }
     }
@@ -257,9 +260,11 @@ export default function Cart() {
         await axios.post(url, payload, { headers });
     }
 
-    const handleChooseFile = (files: any) => {
-        if (files.length > 0) {
-            const file = files[0];
+    const handleChooseFile = (files: unknown) => {
+        const chooseFiles: FileList = files as FileList;
+
+        if (chooseFiles.length > 0) {
+            const file = chooseFiles[0];
             setMyFile(file);
         }
     }
@@ -295,7 +300,7 @@ export default function Cart() {
                 <div className="text-xl font-bold">การชำระเงิน</div>
                 <div className="text-center mt-2">
                     {qrImage && (
-                        <img src={qrImage} className="w-full border rounded-xl shadow-lg" />
+                        <Image alt="" src={qrImage} className="w-full border rounded-xl shadow-lg" />
                     )}
                 </div>
                 <form onSubmit={(e) => handleSave(e)}>
