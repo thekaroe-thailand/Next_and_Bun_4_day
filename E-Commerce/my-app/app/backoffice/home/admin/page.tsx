@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
+import { ErrorInterface } from "@/app/interface/ErrorInterface";
 
 export default function Admin() {
     const [admins, setAdmins] = useState([]);
@@ -32,10 +33,11 @@ export default function Admin() {
             if (response.status == 200) {
                 setAdmins(response.data);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const error = err as ErrorInterface;
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: error.message,
                 icon: 'error'
             })
         }
