@@ -15,4 +15,5 @@ export interface OrderInterface {
     customerPhone: string;
     OrderDetail: OrderDetailInterface[]
     sum: number;
+    statusText: string;
 }

@@ -22,7 +22,14 @@ export default function Page() {
 
             if (result.data.token != null) {
                 localStorage.setItem(Config.tokenName, result.data.token);
-                router.push('/backoffice/home/dashboard')
+
+                const level = result.data.level;
+
+                if (level === 'admin') {
+                    router.push('/backoffice/home/dashboard');
+                } else if (level === 'user') {
+                    router.push('/backoffice/home/order');
+                }
             }
         } catch (err: any) {
             Swal.fire({

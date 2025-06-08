@@ -102,11 +102,11 @@ body {
 }
 
 .container table tbody tr:last-child td:first-child {
-  @apply rounded-bl-2xl
+  @apply rounded-bl-2xl border-0
 }
 
 .container table tbody tr:last-child td:last-child {
-  @apply rounded-br-2xl
+  @apply rounded-br-2xl border-0
 }
 
 .container table thead tr th:first-child {

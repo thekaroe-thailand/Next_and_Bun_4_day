@@ -20,14 +20,19 @@ export default function Sidebar() {
         try {
             const url = Config.apiUrl + '/api/admin/info';
             const token = localStorage.getItem(Config.tokenName);
-            const headers = {
-                'Authorization': 'Bearer ' + token
-            }
-            const res = await axios.get(url, { headers });
 
-            if (res.data.name !== undefined) {
-                setName(res.data.name);
-                setLevel(res.data.level);
+            if (!token) {
+                router.push('/backoffice/signin');
+            } else {
+                const headers = {
+                    'Authorization': 'Bearer ' + token
+                }
+                const res = await axios.get(url, { headers });
+
+                if (res.data.name !== undefined) {
+                    setName(res.data.name);
+                    setLevel(res.data.level);
+                }
             }
         } catch (err: any) {
             Swal.fire({
@@ -74,10 +79,12 @@ export default function Sidebar() {
                     </p>
                 </div>
                 <div className="body">
-                    <Link href="/backoffice/home/dashboard">
-                        <i className="fa fa-chart-line"></i>
-                        Dashboard
-                    </Link>
+                    {level === 'admin' &&
+                        <Link href="/backoffice/home/dashboard">
+                            <i className="fa fa-chart-line"></i>
+                            Dashboard
+                        </Link>
+                    }
                     <Link href="/backoffice/home/book">
                         <i className="fa fa-box"></i>
                         หนังสือ
@@ -86,10 +93,12 @@ export default function Sidebar() {
                         <i className="fa fa-file"></i>
                         รายการสั่งซื้อ
                     </Link>
-                    <Link href="/backoffice/home/admin">
-                        <i className="fa fa-user-cog"></i>
-                        ผู้ใช้งานระบบ
-                    </Link>
+                    {level === 'admin' &&
+                        <Link href="/backoffice/home/admin">
+                            <i className="fa fa-user-cog"></i>
+                            ผู้ใช้งานระบบ
+                        </Link>
+                    }
                 </div>
             </div>
         </>

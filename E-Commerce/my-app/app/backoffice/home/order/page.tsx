@@ -11,6 +11,9 @@ export default function Order() {
     const [orders, setOrders] = useState<OrderInterface[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [order, setOrder] = useState<OrderInterface>();
+    const [traceCode, setTraceCode] = useState('');
+    const [express, setExpress] = useState('');
+    const [remark, setRemark] = useState('');
 
     useEffect(() => {
         fetchData();
@@ -19,7 +22,11 @@ export default function Order() {
     const fetchData = async () => {
         try {
             const url = Config.apiUrl + '/api/order/list';
-            const response = await axios.get(url);
+            const token = localStorage.getItem(Config.tokenName);
+            const headers = {
+                'Authorization': 'Bearer ' + token
+            };
+            const response = await axios.get(url, { headers });
 
             if (response.status === 200) {
                 const rows = [];
@@ -41,6 +48,14 @@ export default function Order() {
                     }
 
                     order.sum = sum;
+
+                    if (order.status === 'cancel') {
+                        order.statusText = 'ยกเลิก';
+                    } else if (order.status === 'paid') {
+                        order.statusText = 'ได้รับเงินแล้ว';
+                    } else if (order.status === 'send') {
+                        order.statusText = 'จัดส่งแล้ว';
+                    }
 
                     rows.push(order);
                 }
@@ -65,6 +80,112 @@ export default function Order() {
         setShowModal(false);
     }
 
+    const handleCancel = async () => {
+        try {
+            const button = await Swal.fire({
+                title: 'ยืนยันการยกเลิก',
+                icon: 'question',
+                text: 'คุณต้องการยกเลิกใช่หรือไม่',
+                showConfirmButton: true,
+                showCancelButton: true
+            });
+
+            if (button.isConfirmed) {
+                const url = Config.apiUrl + '/api/order/cancel/' + order?.id;
+                const token = localStorage.getItem(Config.tokenName);
+                const headers = {
+                    'Authorization': 'Bearer ' + token
+                };
+                const response = await axios.delete(url, { headers });
+
+                if (response.status === 200) {
+                    closeModal();
+                    fetchData();
+                }
+            }
+        } catch (err: any) {
+            Swal.fire({
+                title: 'error',
+                icon: 'error',
+                text: err.message
+            })
+        }
+    }
+
+    const handlePaid = async () => {
+        try {
+            const button = await Swal.fire({
+                title: 'ยืนยันการชำระเงิน',
+                icon: 'question',
+                text: 'ตรวจสอบแล้วได้รับเงินจริง',
+                showConfirmButton: true,
+                showCancelButton: true
+            });
+
+            if (button.isConfirmed) {
+                const url = Config.apiUrl + '/api/order/paid/' + order?.id;
+                const token = localStorage.getItem(Config.tokenName);
+                const headers = {
+                    'Authorization': 'Bearer ' + token
+                };
+                const response = await axios.put(url, { headers });
+
+                if (response.status === 200) {
+                    Swal.fire({
+                        title: 'บันทึกข้อมูล',
+                        icon: 'success',
+                        text: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+                        timer: 1000
+                    });
+
+                    closeModal();
+                    fetchData();
+                }
+            }
+        } catch (err: any) {
+            Swal.fire({
+                title: 'error',
+                icon: 'error',
+                text: err.message
+            })
+        }
+    }
+
+    const handleSend = async () => {
+        try {
+            const url = Config.apiUrl + '/api/order/send';
+            const payload = {
+                traceCode: traceCode,
+                express: express,
+                remark: remark,
+                orderId: order?.id
+            }
+            const token = localStorage.getItem(Config.tokenName);
+            const headers = {
+                'Authorization': 'Bearer ' + token
+            };
+            const response = await axios.put(url, payload, { headers });
+
+            if (response.status === 200) {
+                Swal.fire({
+                    title: 'บันทึกข้อมูล',
+                    text: 'บันทึกการจัดส่งแล้ว',
+                    icon: 'success',
+                    timer: 1000
+                })
+
+                closeModal();
+                fetchData();
+            }
+        } catch (err: any) {
+            Swal.fire({
+                title: 'error',
+                icon: 'error',
+                text: err.message
+            })
+        }
+    }
+
     return (
         <div className="container">
             <div className="title">รายการสั่งซื้อ</div>
@@ -86,7 +207,12 @@ export default function Order() {
                             <td>{order.customerName}</td>
                             <td>{order.customerAddress}</td>
                             <td>{order.customerPhone}</td>
-                            <td>{order.status}</td>
+                            <td>
+                                {order.status == 'cancel' && <i className="fa fa-times text-red-500 mr-2"></i>}
+                                {order.status == 'paid' && <i className="fa fa-check text-green-700 mr-2"></i>}
+                                {order.status == 'send' && <i className="fa fa-arrow-right text-blue-600 mr-2"></i>}
+                                {order.statusText}
+                            </td>
                             <td>
                                 <button onClick={(e) => openModal(order)}>
                                     <i className="fa fa-file mr-2"></i>
@@ -102,18 +228,20 @@ export default function Order() {
                 <Modal title="รายการสินค้า" onClose={closeModal} size="xl">
                     <div>
                         <label>รหัสติดตามพัสดุ</label>
-                        <input />
+                        <input value={order?.trackCode} onChange={(e) => setTraceCode(e.target.value)} />
                     </div>
                     <div>
                         <label>บริษัทขนส่ง</label>
-                        <input />
+                        <input value={order?.express} onChange={(e) => setExpress(e.target.value)} />
                     </div>
-                    <div>
+                    <div className="mb-3">
                         <label>เอกสารการโอนเงิน</label>
-                        <i className="fa fa-image text-white text-8xl"></i>
+                        <img src={Config.apiUrl + '/public/upload/slip/' + order?.slipImage}
+                            className="w-[350px] rounded-xl"
+                        />
                     </div>
 
-                    <table className="table mt-5">
+                    <table className="table">
                         <thead>
                             <tr>
                                 <th>รหัสสินค้า</th>
@@ -144,21 +272,21 @@ export default function Order() {
 
                     <div>
                         <label>หมายเหตุ</label>
-                        <input />
+                        <input value={order?.remark} onChange={(e) => setRemark(e.target.value)} />
                     </div>
 
                     <div className="mt-5 flex justify-center gap-2">
-                        <button className="modal-btn-order-cancel">
+                        <button className="modal-btn-order-cancel" onClick={handleCancel}>
                             <i className="fa fa-times mr-2"></i>
                             ยกเลิก
                         </button>
-                        <button className="modal-btn-get-money">
+                        <button className="modal-btn-get-money" onClick={handlePaid}>
                             <i className="fa fa-check mr-2"></i>
                             ได้รับเงินแล้ว
                         </button>
-                        <button className="modal-btn-send">
+                        <button className="modal-btn-send" onClick={handleSend}>
                             <i className="fa fa-circle-check mr-2"></i>
-                            จัดส่งสินค้าแล้ว
+                            จัดส่งสินค้าแล้ว/บันทึก
                         </button>
                     </div>
                 </Modal>
