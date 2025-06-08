@@ -114,7 +114,7 @@ export default function Admin() {
         openModal();
     }
 
-    const handleDelete = async (admin: any) => {
+    const handleDelete = async (admin: AdminInteface) => {
         const button = await Swal.fire({
             title: 'ลบผู้ใช้งาน',
             text: 'คุณต้องการลบผู้ใช้งานชื่อ ' + admin.name + ' ใช่หรือไม่ ?',
@@ -138,10 +138,11 @@ export default function Admin() {
 
                     fetchData();
                 }
-            } catch (err: any) {
+            } catch (err: unknown) {
+                const error = err as ErrorInterface;
                 Swal.fire({
                     title: 'error',
-                    text: err.message,
+                    text: error.message,
                     icon: 'error'
                 })
             }
@@ -170,17 +171,17 @@ export default function Admin() {
                         </tr>
                     </thead>
                     <tbody>
-                        {admins.map((admin: any) => (
+                        {admins.map((admin: AdminInteface) => (
                             <tr key={admin.id}>
                                 <td>{admin.name}</td>
                                 <td>{admin.username}</td>
                                 <td>{admin.level}</td>
                                 <td>
                                     <div className="flex gap-1 justify-center">
-                                        <button className="btn-edit" onClick={(e) => handleEdit(admin)}>
+                                        <button className="btn-edit" onClick={() => handleEdit(admin)}>
                                             <i className="fa fa-edit"></i>
                                         </button>
-                                        <button className="btn-delete" onClick={(e) => handleDelete(admin)}>
+                                        <button className="btn-delete" onClick={() => handleDelete(admin)}>
                                             <i className="fa fa-times"></i>
                                         </button>
                                     </div>
