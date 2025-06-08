@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
 import { ErrorInterface } from "@/app/interface/ErrorInterface";
+import { AdminInteface } from "@/app/interface/AdminInterface";
 
 export default function Admin() {
     const [admins, setAdmins] = useState([]);
@@ -104,7 +105,7 @@ export default function Admin() {
         }
     }
 
-    const handleEdit = (admin: any) => {
+    const handleEdit = (admin: AdminInteface) => {
         setId(admin.id);
         setName(admin.name);
         setUsername(admin.username);
