@@ -12,7 +12,7 @@ import { ErrorInterface } from "../interface/ErrorInterface";
 import Image from "next/image";
 
 export default function Home() {
-    const [books] = useState<BookInterface[]>([]);
+    const [books, setBooks] = useState<BookInterface[]>([]);
     const [token, setToken] = useState('');
     const [carts, setCarts] = useState<CartInterface[]>([]);
     const [memberId, setMemberId] = useState('')
@@ -20,6 +20,7 @@ export default function Home() {
 
     useEffect(() => {
         fetchData();
+        readToken();
     }, []);
 
     useEffect(() => {
@@ -57,8 +58,7 @@ export default function Home() {
             const response = await axios.get(url);
 
             if (response.status === 200) {
-                //setBooks([]);
-                readToken();
+                setBooks(response.data);
             }
         } catch (err: unknown) {
             Swal.fire({
