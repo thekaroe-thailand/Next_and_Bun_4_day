@@ -1,6 +1,7 @@
 'use client'
 
 import { Config } from "@/app/config";
+import { ErrorInterface } from "@/app/interface/ErrorInterface";
 import { OrderInterface } from "@/app/interface/OrderInterface"
 import axios from "axios";
 import { useEffect, useState } from "react"
@@ -47,11 +48,12 @@ export default function History() {
 
                 setOrders(rows);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const error = err as ErrorInterface;
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: err.messagge
+                text: error.message
             })
         }
     }
