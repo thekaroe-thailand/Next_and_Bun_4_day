@@ -24,7 +24,7 @@ export default function SignIn() {
                 localStorage.setItem(Config.tokenMember, response.data.token)
                 window.location.href = '/web'
             }
-        } catch (err: any) {
+        } catch (_) {
             Swal.fire({
                 title: 'username ไม่ถูกต้อง',
                 text: 'ไม่มีผู้ใช้นี้ในระบบ',

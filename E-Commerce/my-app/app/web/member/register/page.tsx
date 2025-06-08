@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Config } from "@/app/config"
 import axios from "axios"
 import Swal from "sweetalert2"
+import { ErrorInterface } from "@/app/interface/ErrorInterface"
 
 export default function Register() {
     const [phone, setPhone] = useState('');
@@ -40,11 +41,11 @@ export default function Register() {
                     timer: 1000
                 })
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: 'Error ' + err
+                text: 'Error ' + (err as ErrorInterface).message
             })
         }
     }
