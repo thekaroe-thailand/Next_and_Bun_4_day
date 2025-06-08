@@ -1,6 +1,7 @@
 'use client'
 
 import { Config } from "@/app/config";
+import { ErrorInterface } from "@/app/interface/ErrorInterface";
 import axios from "axios";
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2";
@@ -41,10 +42,10 @@ export default function EditProfile() {
                     timer: 1000
                 })
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
@@ -66,10 +67,10 @@ export default function EditProfile() {
                 setName(response.data.name);
                 setUsername(response.data.username);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }

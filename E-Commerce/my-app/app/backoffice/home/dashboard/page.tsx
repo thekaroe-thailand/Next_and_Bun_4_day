@@ -1,6 +1,7 @@
 'use client'
 
 import { Config } from "@/app/config";
+import { ErrorInterface } from "@/app/interface/ErrorInterface";
 import axios from "axios";
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2";
@@ -28,10 +29,10 @@ export default function Dashboard() {
                 setTotalIncome(response.data.totalIncome);
                 setTotalMember(response.data.totalMember);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             Swal.fire({
                 title: 'error',
-                text: err.message,
+                text: (err as ErrorInterface).message,
                 icon: 'error'
             })
         }
